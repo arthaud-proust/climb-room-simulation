@@ -1,0 +1,179 @@
+body {
+    margin: 0;
+    padding:0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+main {
+    min-height: 115vw !important;
+    overflow-x: initial !important;
+}
+
+:root {
+    --distArrow: 150px;
+}
+
+.needShow {
+    display: none;
+    cursor: normal;
+    opacity: 0;
+    transition: .2s;
+}
+.needShow.show {
+    display: initial;
+    opacity: 1;
+}
+
+
+#renderer {
+    /* position: relative; */
+    position: sticky;
+    top:0px;
+}
+
+#renderer canvas {
+    width: 100vw !important;
+    height: calc( 9/16 * 100vw) !important;
+    max-height: 100vh;
+}
+
+.btn {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background: none;
+    border: 1px solid rgba(0, 0, 0, 0.616);
+    padding: 25px;
+
+    border-radius: 26px;
+    transition: .2s;
+}
+.arrowBtn {
+    opacity: 0;
+    top: 50%;
+}
+.btn.show {
+    cursor: pointer;
+    opacity: 1;
+}
+.btn:hover {
+    /* border-color: transparent; */
+    /* padding: 0; */
+    /* border-color: white; */
+    /* border-width: 26px; */
+    border-color: transparent;
+}
+.btn::before, .btn::after {
+    position: absolute;
+    display: block;
+    content:' ';
+    height: 0;
+    width: 0;
+    border-radius: 26px;
+    transform: translate(-50%, -50%);
+    transition: .2s;
+}
+
+.btn::before {
+    z-index: -1;
+    background-color: rgba(255, 255, 255, 0.322);
+}
+
+.btn:hover::before{ 
+    height: 50px;
+    width: 70px;
+}
+.btn::after {
+    height: 50px;
+    width: 50px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 30px;
+    transition-delay: .1s;
+}
+
+
+#leftArrow {
+    left: var(--distArrow);
+}
+#leftArrow::after {
+    background-image: url(/assets/svg/leftArrow.svg);
+}
+#leftArrow:hover::after {
+    background-position:0% 50%;
+}
+
+#rightArrow {
+    left: calc(100vw - var(--distArrow));
+}
+#rightArrow::after {
+    background-image: url(/assets/svg/rightArrow.svg);
+}
+#rightArrow:hover::after {
+    background-position: 100% 50%;
+}
+
+
+#sectorClose, #addRoute {
+    cursor: pointer;
+    bottom: 50px;
+    left: 50%;
+}
+#addRoute::after {
+    background-image: url(/assets/svg/add.svg);
+}
+#sectorClose::after {
+    background-image: url(/assets/svg/cross.svg);
+}
+#sectorClose:hover::after {
+}
+
+#sectorInfo {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left:30%;
+    transform: translateY(-50%);
+    max-width: 30ch;
+    border-radius: 20px;
+    padding: 20px 30px;
+    /* background:rgba(0, 0, 0, 0.281); */
+    color: rgb(231, 231, 231);
+}
+
+#sectorQuit {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    border:none;
+    padding: 10px;
+    background: url(/assets/svg/cross.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+#sectorName {
+    margin-top: 5px;
+}
+
+#sectorOnPan {
+    font-weight: 100;
+    margin-bottom: 5px;
+}
+#sectorRoutes {
+    display: flex;
+    flex-flow: row wrap;
+}
+.sectorRoute {
+    color:white;
+    mix-blend-mode: difference;
+    padding: 4px 5px;
+    border-radius: 5px;
+    margin: 2px;
+}

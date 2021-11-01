@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+        <script>var link=document.createElement('link');link.rel='stylesheet';if(window.screen.width < 768) {link.href="/css/mobile.css";} else {link.href="/css/large.css";}document.getElementsByTagName('head')[0].appendChild(link)</script>   
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <link rel="stylesheet" href="css/master.css"> -->
+	</head>
+	<body>
+		<script>
+			const colorsData = {
+				red: ['#FF0000', '#FFFFFF']
+			};
+
+			const routesData = [
+				{id:1,diff:'6c',color:'purple', sectors:['t1'], type:'route'},
+				{id:1,diff:'6c',color:'yellow', sectors:['r1'], type:'route'},
+				{id:1,diff:'moyen',color:'blue', sectors:['r1'], type:'bloc'},
+				{id:1,diff:'6c',color:'red', sectors:['r1'], type:'route'},
+				{id:1,diff:'6c',color:'orange', sectors:['r1'], type:'route'},
+				{id:1,diff:'difficile',color:'green', sectors:['r1'], type:'bloc'},
+				{id:1,diff:'6c',color:'black', sectors:['r1'], type:'route'},
+				{id:1,diff:'6c',color:'white', sectors:['r1'], type:'route'},
+				{id:1,diff:'Difficile',color:'red', sectors:['r1'], type:'route'},
+				// {diff:'4a',color:'red', sectors:['r1'], type:'route'},
+				// {diff:'5a',color:'green', sectors:['r2'], type:'route'},
+			];
+
+			window.adminVersion = false;
+			window.adminUrls = {
+				'create': ()=>`http://localhost:8000/admin/route/create`,
+				'edit': (n)=>`http://localhost:8000/admin/route/edit/${n}`,
+			};
+		</script>
+		<div id="renderer">
+			<div id="partControls" class="needShow show">
+				<button id="leftArrow" class="btn arrowBtn"></button>
+				<button id="rightArrow" class="btn arrowBtn"></button>
+			</div>
+			<div id="sectorContainer" class="needShow">
+				<div id="sectorInfo">
+					<h1 id="sectorName"></h1>
+					<h3 id="sectorOnPan">Sur ce pan</h3>
+					<div id="sectorRoutes"></div>
+				</div>
+				<button id="sectorClose" class="btn"></button>
+			</div>
+			<a id="addRoute" class="btn needShow" title="Ajouter une voie/bloc"></a>
+		</div>
+
+
+		<script src="js/room3d.js"></script>
+	</body>
+</html>
