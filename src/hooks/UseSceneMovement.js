@@ -106,7 +106,6 @@ module.exports = class UseSceneMovement {
         if(window.adminVersion) document.getElementById('addRoute').classList.add('show');
         this.lookPart = this.parts[nNextPart];
 
-        console.log({...this.lookCoords.get(this.lookPart)});
         this.animations.part = new TWEEN.Tween({ camera: this.tweenCoords.camera, lookAt: this.tweenCoords.lookAt })
             .to(this.lookCoords.get(this.parts[nNextPart]), TRANSITION_PART_DURATION)
             .easing(TWEEN.Easing.Quadratic.InOut)
@@ -135,6 +134,9 @@ module.exports = class UseSceneMovement {
         RENDERER_EL.dataset.routeView = sector.data.type==="route";
         RENDERER_EL.dataset.sector = sector.data.identifier;
 
+        console.log(sector.data);
+
+
         document.getElementById('partControls').classList.remove('show');
         document.getElementById('addRoute').classList.remove('show');
 
@@ -149,18 +151,16 @@ module.exports = class UseSceneMovement {
 
         document.getElementById('sectorContainer').classList.add('show');
         document.getElementById('sectorClose').addEventListener('click', ()=>{
-            // shaders.outlineSelectPass.selectedObjects = [ ];
-            // shaders.outlineHoverPass.selectedObjects = [ ];
             document.getElementById('sectorContainer').classList.remove('show');
             document.getElementById('partControls').classList.add('show');
             this.lookPart = sector.data.part;
-            console.log(sector.data);
             this.tweenCoords.camera = this.grabbingOnRouteView.coords.camera;
             this.tweenCoords.lookAt = this.grabbingOnRouteView.coords.lookAt;
             this.grabbingOnRouteView.displacement.base = {
                 x:0,
                 y:0
             };
+            this.camera.layers.enableAll();
             this.moveToPart(0);
         })
 
@@ -210,6 +210,13 @@ module.exports = class UseSceneMovement {
                     this.tweenCoords.lookAt.z
                 );
             })
+            .onComplete(()=>{
+                if(sector.data.type==='route') {
+                    this.camera.layers.disableAll();
+                    this.camera.layers.enable(0);
+                    this.camera.layers.enable(sector.data.partId);
+                }
+            })
             .start()
     }
 
@@ -220,19 +227,23 @@ module.exports = class UseSceneMovement {
     _onclick(event) {
         if(RENDERER_EL.dataset.routeView==="true") return;
 
-        var mouse = new THREE.Vector2();
-        var raycaster = new THREE.Raycaster();
+        let mouse = new THREE.Vector2();
+        let raycaster = new THREE.Raycaster();
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-        raycaster.setFromCamera(mouse, this.camera);
-
-        var intersects = raycaster.intersectObjects(this.world.routes, true); //array
-
-        if (intersects.length > 0) {
-            this.selectedObject = intersects[0].object;
-            this.moveToSector(this.selectedObject);
+        for(let i=1; i<=3;i++) {
+            raycaster.layers.set(i);
+            raycaster.setFromCamera(mouse, this.camera);
+    
+            let intersects = raycaster.intersectObjects(this.world.routes, true); //array
+    
+            if (intersects.length > 0) {
+                this.selectedObject = intersects[0].object;
+                this.moveToSector(this.selectedObject);
+            }
         }
+
     }
     
     _onWindowScroll(event) {

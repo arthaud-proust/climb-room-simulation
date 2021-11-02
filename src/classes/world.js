@@ -20,6 +20,11 @@ module.exports = class {
         this.obj={
             walls: []
         };
+        this.parts = [
+            'left',
+            'center',
+            'right'
+        ];
 
         this.cubes=[];
         this.cubeBase = {
@@ -207,6 +212,7 @@ module.exports = class {
         const obj_loader = new OBJLoader();
         const mtl_loader = new MTLLoader();
 
+        data.partId = this.parts.indexOf(data.part)+1;
 
 
 
@@ -271,6 +277,7 @@ module.exports = class {
                     routes: routesData.filter(route=>route.sectors.includes(data.identifier))
                 }
                 mesh.state = 'initial';
+                mesh.layers.set(data.partId);
     
                 // var geo = new THREE.EdgesGeometry( mesh.geometry ); // or WireframeGeometry
                 // var mat = new THREE.LineBasicMaterial( { color: 0x000000 } );

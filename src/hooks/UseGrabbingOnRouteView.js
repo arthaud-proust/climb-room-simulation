@@ -23,6 +23,9 @@ module.exports = class UseGrabbingOnRouteView {
             x:0,
             y:0
         };
+
+        this.ongoingTouches = [];
+
         this.enable();
     }
 
@@ -35,12 +38,16 @@ module.exports = class UseGrabbingOnRouteView {
     }
 
     enable() {
-        document.addEventListener('mousedown', e=>this._onMouseDown(e));
-        document.addEventListener('mousemove', e=>this._onMouseMove(e));
-        document.addEventListener('mouseup', e=>this._onMouseUp(e));
+        document.addEventListener('mousedown', e=>this._onGrabStart(e));
+        document.addEventListener('mousemove', e=>this._onGrabMove(e));
+        document.addEventListener('mouseup', e=>this._onGrabEnd());
+
+        document.addEventListener('touchstart', e=>this._onGrabStart(e.changedTouches[0]));
+        document.addEventListener('touchmove', e=>this._onGrabMove(e.changedTouches[0]));
+        document.addEventListener('touchend', e=>this._onGrabEnd());
     }
 
-    _onMouseDown(e) {
+    _onGrabStart(e) {
         if(RENDERER_EL.dataset.routeView==="true") {
             this.origin = {
                 x: e.pageX,
@@ -50,13 +57,21 @@ module.exports = class UseGrabbingOnRouteView {
         }
     }
 
-    _onMouseMove(e) {
+    _onGrabMove(e) {
         if(RENDERER_EL.dataset.grab==="true") {
             const distances = this.getDistances(e);
-            this.displacement.actual = {
+            const futureActualDisplacement = {
                 x: distances.x * 0.5 + this.displacement.base.x,
                 y: distances.y * 0.7 + this.displacement.base.y
             };
+
+            if(futureActualDisplacement.y<-MAX_Y_DISPLACEMENT) futureActualDisplacement.y=-MAX_Y_DISPLACEMENT;
+            if(futureActualDisplacement.y>MAX_Y_DISPLACEMENT) futureActualDisplacement.y=MAX_Y_DISPLACEMENT;
+            if(futureActualDisplacement.x<-MAX_X_DISPLACEMENT) futureActualDisplacement.x=-MAX_X_DISPLACEMENT;
+            if(futureActualDisplacement.x>MAX_X_DISPLACEMENT) futureActualDisplacement.x=MAX_X_DISPLACEMENT;
+
+            this.displacement.actual = futureActualDisplacement;
+
 
             switch(this.mover.lookPart) {
                 case 'left':
@@ -115,7 +130,7 @@ module.exports = class UseGrabbingOnRouteView {
         }
     }
 
-    _onMouseUp(e) {
+    _onGrabEnd() {
         if(RENDERER_EL.dataset.grab==="true") {
             RENDERER_EL.dataset.grab="false";
             this.displacement.base = {...this.displacement.actual};
