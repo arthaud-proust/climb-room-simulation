@@ -229,8 +229,21 @@ module.exports = class UseSceneMovement {
 
         let mouse = new THREE.Vector2();
         let raycaster = new THREE.Raycaster();
-        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+        // ancienne version qui marche pô
+        // mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        // mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+        // nouvelle version qui marche bieeeenn
+        var rect = event.target.getBoundingClientRect();
+        mouse.x = 
+            (event.clientX - rect.left)  // position relative à l'élément
+            / rect.width * 2 - 1 // rapport
+        ; 
+        mouse.y = 
+            (event.clientY - rect.top) // position relative à l'élément
+            / -rect.height * 2 + 1 // rapport
+        ;
 
         for(let i=1; i<=3;i++) {
             raycaster.layers.set(i);

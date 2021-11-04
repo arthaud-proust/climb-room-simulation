@@ -33,21 +33,24 @@
 				'edit': (n)=>`http://localhost:8000/admin/route/edit/${n}`,
 			};
 		</script>
-		<div id="renderer">
-			<div id="partControls" class="needShow show">
-				<button id="leftArrow" class="btn arrowBtn"></button>
-				<button id="rightArrow" class="btn arrowBtn"></button>
-			</div>
-			<div id="sectorContainer" class="needShow">
-				<div id="sectorInfo">
-					<h1 id="sectorName"></h1>
-					<h3 id="sectorOnPan">Sur ce pan</h3>
-					<div id="sectorRoutes"></div>
+		<main>
+			<div id="renderer" class="fullscreens">
+				<div id="partControls" class="needShow show">
+					<button id="leftArrow" class="btn arrowBtn"></button>
+					<button id="rightArrow" class="btn arrowBtn"></button>
 				</div>
-				<button id="sectorClose" class="btn"></button>
+				<div id="sectorContainer" class="needShow">
+					<div id="sectorInfo">
+						<h1 id="sectorName"></h1>
+						<h3 id="sectorOnPan">Sur ce pan</h3>
+						<div id="sectorRoutes"></div>
+					</div>
+					<button id="sectorClose" class="btn"></button>
+				</div>
+				<a id="addRoute" class="btn needShow" title="Ajouter une voie/bloc"></a>
 			</div>
-			<a id="addRoute" class="btn needShow" title="Ajouter une voie/bloc"></a>
-		</div>
+		</main>
+
 
 
 		<script src="js/room3d.js"></script>

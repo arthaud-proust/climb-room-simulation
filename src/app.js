@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import World from './classes/world';
 import * as TWEEN from '@tweenjs/tween.js';
-const Store = require('./helpers/store');
 const UseShaders = require('./hooks/UseShaders');
 const UseSceneMovement = require('./hooks/UseSceneMovement');
 
@@ -26,12 +25,8 @@ var
     renderer,
     shaders,
     world,
-    selectedObjects = []
+    sceneMover
 ;
-
-
-var sceneMover;
-
 
 
 function init() {
